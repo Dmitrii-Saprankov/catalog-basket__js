@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="basket__wrapper"></div>
+
+    <script>
+        let basketWrapper = document.getElementById('basket__wrapper');
+
+        function countBasketPrice() {
+            let basketResult = 0;
+            let basketAmount = 0;
+            for (let prop in basket) {
+                basketResult += basket[prop].price * basket[prop].quantity;
+                basketAmount += basket[prop].quantity;
+                basketPrice.innerHTML = 'В корзине ' + basketAmount + ' товаров, на сумму ' + basketResult + ' рублей';
+            }
+        }
+
+        // Каталог
+        let contentCatalog = document.createElement('div');
+        contentCatalog.className = 'content_catalog';
+        contentCatalog.innerHTML = '<h1>Каталог</h1>';
+        contentCatalog.style.fontFamily = 'Roboto';
+        basketWrapper.appendChild(contentCatalog);
+
+        let products = {
+            id1: {
+                name: 'product1',
+                price: 2000,
+            },
+
+            id2: {
+                name: 'product2',
+                price: 799,
+            },
+
+            id3: {
+                name: 'product3',
+                price: 250,
+            }
+        }
+
+
+        for (let prop in products) {
+            let catalogItemCard = document.createElement('div');
+            catalogItemCard.className = 'catalog_item_card_' + prop;
+            contentCatalog.appendChild(catalogItemCard);
+
+            let catalogItemName = document.createElement('p');
+            catalogItemName.className = 'catalog_item_name_' + prop;
+            catalogItemName.innerHTML = 'Наименование товара: ' + products[prop].name;
+            catalogItemCard.appendChild(catalogItemName);
+
+            let catalogItemPrice = document.createElement('p');
+            catalogItemPrice.className = 'catalog_item_price_' + prop;
+            catalogItemPrice.innerHTML = 'Цена: ' + products[prop].price;
+            catalogItemCard.appendChild(catalogItemPrice);
+
+            let catalogItemButton = document.createElement('button');
+            catalogItemButton.className = 'catalog_item_button_' + prop;
+            catalogItemButton.innerHTML = 'Купить';
+            catalogItemCard.appendChild(catalogItemButton);
+
+            catalogItemButton.onclick = function () {
+                let getBasketEmpty = document.querySelector('.basket_empty');
+                if (getBasketEmpty) {
+                    getBasketEmpty.remove();
+                }
+
+                if (basket[prop]) {
+                    basket[prop].quantity++;
+                    let changeQuantity = document.querySelector('.basket_item_quantity_' + prop);
+                    changeQuantity.innerHTML = 'Кол-во: ' + basket[prop].quantity;
+                } else {
+                    basket[prop] = products[prop];
+                    basket[prop].quantity = 1;
+
+                    let basketItem = document.createElement('div');
+                    basketItem.className = 'cart_item';
+                    basketItems.appendChild(basketItem);
+
+                    let basketItemName = document.createElement('p');
+                    basketItemName.className = 'basket_item_name';
+                    basketItem.appendChild(basketItemName);
+                    basketItemName.innerHTML = 'Наименование товара: ' + basket[prop].name;
+
+                    let basketItemPrice = document.createElement('p');
+                    basketItemPrice.className = 'basket_item_price';
+                    basketItem.appendChild(basketItemPrice);
+                    basketItemPrice.innerHTML = 'Стоимость: ' + basket[prop].price;
+
+                    let basketItemQuantity = document.createElement('p');
+                    basketItemQuantity.className = 'basket_item_quantity_' + prop;
+                    basketItem.appendChild(basketItemQuantity);
+                    basketItemQuantity.innerHTML = 'Кол-во: ' + basket[prop].quantity;
+                }
+
+                countBasketPrice();
+            }
+        }
+
+        // Корзина
+        let basket = [];
+
+        let basketDiv = document.createElement('div');
+        basketDiv.className = 'basket__div';
+        basketWrapper.appendChild(basketDiv);
+
+        let basketTitle = document.createElement('h3');
+        basketDiv.appendChild(basketTitle);
+        basketTitle.innerHTML = 'Корзина:';
+
+        let basketItems = document.createElement('div');
+        basketItems.className = 'basket_items';
+        basketDiv.appendChild(basketItems);
+
+        let basketEmpty = document.createElement('div');
+        basketEmpty.className = 'basket_empty';
+        basketItems.append(basketEmpty);
+        basketEmpty.innerHTML = 'Корзина пуста';
+
+        let basketPrice = document.createElement('p');
+        basketDiv.appendChild(basketPrice);
+
+
+    </script>
+</body>
+
+</html>
